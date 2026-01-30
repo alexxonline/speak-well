@@ -1,5 +1,7 @@
 # Speak Well
 
+![Speak Well screenshot](screenshot_speak_well.png)
+
 Speak Well is a Portuguese pronunciation learning app. Learners listen, speak, and receive feedback by comparing their spoken phrase to the expected phrase. The app uses the ElevenLabs Speech-to-Text API to transcribe microphone input in Portuguese and highlights which words were spoken correctly.
 
 ## Features

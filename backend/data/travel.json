@@ -1,0 +1,12 @@
+[
+  { "id": 1, "phrase": "Onde fica a estação de trem?", "translation": "Where is the train station?" },
+  { "id": 2, "phrase": "Quanto custa uma passagem para Lisboa?", "translation": "How much is a ticket to Lisbon?" },
+  { "id": 3, "phrase": "A que horas sai o próximo ônibus?", "translation": "What time does the next bus leave?" },
+  { "id": 4, "phrase": "Eu preciso de um táxi", "translation": "I need a taxi" },
+  { "id": 5, "phrase": "Onde posso alugar um carro?", "translation": "Where can I rent a car?" },
+  { "id": 6, "phrase": "Quanto tempo leva para chegar lá?", "translation": "How long does it take to get there?" },
+  { "id": 7, "phrase": "Pare aqui, por favor", "translation": "Stop here, please" },
+  { "id": 8, "phrase": "Eu quero ir para o aeroporto", "translation": "I want to go to the airport" },
+  { "id": 9, "phrase": "Tem conexão de Wi-Fi?", "translation": "Is there Wi-Fi connection?" },
+  { "id": 10, "phrase": "Perdi minha conexão", "translation": "I missed my connection" }
+]

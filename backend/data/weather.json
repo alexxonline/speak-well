@@ -1,0 +1,12 @@
+[
+  { "id": 1, "phrase": "Está fazendo sol", "translation": "It's sunny" },
+  { "id": 2, "phrase": "Está chovendo", "translation": "It's raining" },
+  { "id": 3, "phrase": "Está muito quente", "translation": "It's very hot" },
+  { "id": 4, "phrase": "Qual a previsão do tempo?", "translation": "What's the weather forecast?" },
+  { "id": 5, "phrase": "Está ventando muito", "translation": "It's very windy" },
+  { "id": 6, "phrase": "Vai fazer frio amanhã", "translation": "It will be cold tomorrow" },
+  { "id": 7, "phrase": "Está nublado", "translation": "It's cloudy" },
+  { "id": 8, "phrase": "Tem umidade no ar", "translation": "It's humid" },
+  { "id": 9, "phrase": "O céu está limpo", "translation": "The sky is clear" },
+  { "id": 10, "phrase": "Preciso de um guarda-chuva", "translation": "I need an umbrella" }
+]

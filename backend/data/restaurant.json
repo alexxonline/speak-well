@@ -1,0 +1,12 @@
+[
+  { "id": 1, "phrase": "Uma mesa para dois, por favor", "translation": "A table for two, please" },
+  { "id": 2, "phrase": "O cardápio, por favor", "translation": "The menu, please" },
+  { "id": 3, "phrase": "Eu gostaria de pedir", "translation": "I would like to order" },
+  { "id": 4, "phrase": "A conta, por favor", "translation": "The check, please" },
+  { "id": 5, "phrase": "Está muito bom", "translation": "It's very good" },
+  { "id": 6, "phrase": "Eu sou vegetariano", "translation": "I am vegetarian" },
+  { "id": 7, "phrase": "Tem algum prato sem carne?", "translation": "Do you have any dishes without meat?" },
+  { "id": 8, "phrase": "Pode trazer mais água?", "translation": "Can you bring more water?" },
+  { "id": 9, "phrase": "Quanto custa isso?", "translation": "How much does this cost?" },
+  { "id": 10, "phrase": "Eu não gosto de comida picante", "translation": "I don't like spicy food" }
+]

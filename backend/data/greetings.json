@@ -1,0 +1,12 @@
+[
+  { "id": 1, "phrase": "Olá, como vai?", "translation": "Hello, how are you?" },
+  { "id": 2, "phrase": "Bom dia", "translation": "Good morning" },
+  { "id": 3, "phrase": "Obrigado", "translation": "Thank you" },
+  { "id": 4, "phrase": "Por favor", "translation": "Please" },
+  { "id": 5, "phrase": "Como se chama?", "translation": "What is your name?" },
+  { "id": 6, "phrase": "Muito prazer", "translation": "Nice to meet you" },
+  { "id": 7, "phrase": "Até logo", "translation": "See you later" },
+  { "id": 8, "phrase": "Boa noite", "translation": "Good night" },
+  { "id": 9, "phrase": "Eu não entendo", "translation": "I don't understand" },
+  { "id": 10, "phrase": "Você fala inglês?", "translation": "Do you speak English?" }
+]

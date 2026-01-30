@@ -1,21 +1,21 @@
-import { useState, useRef, useCallback } from 'preact/hooks'
-import { Link } from 'react-router-dom'
+import { useState, useRef, useCallback, useEffect } from 'preact/hooks'
+import { Link, useSearchParams } from 'react-router-dom'
 import './Exercise.css'
 
 const API_BASE_URL = 'http://localhost:8000'
 
-const portuguesePhrases = [
-  { id: 1, phrase: 'Olá, como vai?', translation: 'Hello, how are you?' },
-  { id: 2, phrase: 'Bom dia', translation: 'Good morning' },
-  { id: 3, phrase: 'Obrigado', translation: 'Thank you' },
-  { id: 4, phrase: 'Por favor', translation: 'Please' },
-  { id: 5, phrase: 'Como se chama?', translation: 'What is your name?' },
-  { id: 6, phrase: 'Muito prazer', translation: 'Nice to meet you' },
-  { id: 7, phrase: 'Até logo', translation: 'See you later' },
-  { id: 8, phrase: 'Boa noite', translation: 'Good night' },
-  { id: 9, phrase: 'Eu não entendo', translation: 'I don\'t understand' },
-  { id: 10, phrase: 'Você fala inglês?', translation: 'Do you speak English?' },
-]
+interface Phrase {
+  id: number
+  phrase: string
+  translation: string
+}
+
+interface Category {
+  id: string
+  name: string
+  description: string
+  icon?: string
+}
 
 interface WordEvaluation {
   word: string
@@ -31,23 +31,67 @@ interface EvaluationResult {
 }
 
 export function Exercise() {
+  const [searchParams] = useSearchParams()
+  const categoryId = searchParams.get('category') || 'greetings'
+
+  const [phrases, setPhrases] = useState<Phrase[]>([])
+  const [categoryName, setCategoryName] = useState('')
   const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0)
   const [isRecording, setIsRecording] = useState(false)
   const [evaluation, setEvaluation] = useState<EvaluationResult | null>(null)
   const [isEvaluating, setIsEvaluating] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
   const audioChunksRef = useRef<Blob[]>([])
   const recordingPhraseRef = useRef<string>('')
 
-  const currentPhrase = portuguesePhrases[currentPhraseIndex]
+  useEffect(() => {
+    const fetchCategoryAndPhrases = async () => {
+      setIsLoading(true)
+      setError(null)
+      try {
+        const [categoriesResponse, phrasesResponse] = await Promise.all([
+          fetch(`${API_BASE_URL}/categories`),
+          fetch(`${API_BASE_URL}/categories/${categoryId}/phrases`),
+        ])
+
+        if (!categoriesResponse.ok) {
+          throw new Error('Failed to load categories')
+        }
+
+        if (!phrasesResponse.ok) {
+          throw new Error('Failed to load phrases')
+        }
+
+        const categories: Category[] = await categoriesResponse.json()
+        const phrasesData: Phrase[] = await phrasesResponse.json()
+
+        const selectedCategory = categories.find((category) => category.id === categoryId)
+        setCategoryName(selectedCategory?.name ?? '')
+        setPhrases(phrasesData)
+        setCurrentPhraseIndex(0)
+        setEvaluation(null)
+      } catch (err) {
+        setError('Failed to load phrases. Please try again.')
+        setPhrases([])
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchCategoryAndPhrases()
+  }, [categoryId])
+
+  const currentPhrase = phrases[currentPhraseIndex]
 
   const sendAudioForEvaluation = async (audioBlob: Blob, expectedPhrase: string) => {
     try {
       const formData = new FormData()
       formData.append('audio', audioBlob, 'recording.webm')
       formData.append('expected_phrase', expectedPhrase)
+      formData.append('category', categoryId)
 
       const response = await fetch(`${API_BASE_URL}/transcribe`, {
         method: 'POST',
@@ -71,7 +115,12 @@ export function Exercise() {
   const startRecording = useCallback(async () => {
     try {
       // Store the current phrase at the moment recording starts
-      recordingPhraseRef.current = currentPhrase.phrase
+      recordingPhraseRef.current = currentPhrase?.phrase ?? ''
+
+      if (!recordingPhraseRef.current) {
+        setError('No phrase available to record.')
+        return
+      }
       
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
       const mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' })
@@ -101,7 +150,7 @@ export function Exercise() {
       setError('Could not access microphone. Please allow microphone permissions.')
       console.error('Error accessing microphone:', err)
     }
-  }, [currentPhrase.phrase])
+  }, [currentPhrase?.phrase, categoryId])
 
   const stopRecording = useCallback(() => {
     if (mediaRecorderRef.current && isRecording) {
@@ -112,6 +161,7 @@ export function Exercise() {
   }, [isRecording])
 
   const handleRecord = () => {
+    if (!currentPhrase) return
     if (isRecording) {
       stopRecording()
     } else {
@@ -126,7 +176,7 @@ export function Exercise() {
   }
 
   const handleNext = () => {
-    if (currentPhraseIndex < portuguesePhrases.length - 1) {
+    if (currentPhraseIndex < phrases.length - 1) {
       setCurrentPhraseIndex(currentPhraseIndex + 1)
       setEvaluation(null)
       setError(null)
@@ -151,12 +201,32 @@ export function Exercise() {
     }
   }
 
+  if (isLoading) {
+    return (
+      <div className="exercise-container">
+        <div className="loading">Loading phrases...</div>
+      </div>
+    )
+  }
+
+  if (error && phrases.length === 0) {
+    return (
+      <div className="exercise-container">
+        <div className="evaluation-result error">{error}</div>
+        <Link to="/" className="back-link">← Back to Home</Link>
+      </div>
+    )
+  }
+
   return (
     <div className="exercise-container">
       <header className="exercise-header">
         <Link to="/" className="back-link">← Back to Home</Link>
+        {categoryName && (
+          <div className="category-badge">{categoryName}</div>
+        )}
         <div className="progress">
-          Phrase {currentPhraseIndex + 1} of {portuguesePhrases.length}
+          Phrase {currentPhraseIndex + 1} of {phrases.length}
         </div>
       </header>
 
@@ -164,12 +234,12 @@ export function Exercise() {
         <div className="phrase-card">
           <div className="phrase-section">
             <span className="language-label">Portuguese</span>
-            <h2 className="phrase-text">{currentPhrase.phrase}</h2>
+            <h2 className="phrase-text">{currentPhrase?.phrase}</h2>
           </div>
           
           <div className="translation-section">
             <span className="language-label">English</span>
-            <p className="translation-text">{currentPhrase.translation}</p>
+            <p className="translation-text">{currentPhrase?.translation}</p>
           </div>
         </div>
 
@@ -177,7 +247,7 @@ export function Exercise() {
           <button
             className={`record-button ${isRecording ? 'recording' : ''}`}
             onClick={handleRecord}
-            disabled={isEvaluating}
+            disabled={isEvaluating || !currentPhrase}
             aria-label={isRecording ? 'Stop recording' : 'Start recording'}
           >
             <svg
@@ -264,7 +334,7 @@ export function Exercise() {
           <button
             className="nav-button"
             onClick={handleNext}
-            disabled={currentPhraseIndex === portuguesePhrases.length - 1}
+            disabled={currentPhraseIndex === phrases.length - 1}
           >
             Next →
           </button>

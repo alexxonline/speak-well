@@ -1,0 +1,12 @@
+[
+  { "id": 1, "phrase": "Um, dois, três", "translation": "One, two, three" },
+  { "id": 2, "phrase": "Cinco reais", "translation": "Five reais" },
+  { "id": 3, "phrase": "Eu tenho dez anos", "translation": "I am ten years old" },
+  { "id": 4, "phrase": "São vinte e cinco graus", "translation": "It's twenty-five degrees" },
+  { "id": 5, "phrase": "Cem pessoas", "translation": "One hundred people" },
+  { "id": 6, "phrase": "Meu número é nove nove oito sete", "translation": "My number is nine nine eight seven" },
+  { "id": 7, "phrase": "Meio quilo de queijo", "translation": "Half a kilo of cheese" },
+  { "id": 8, "phrase": "Primeiro andar", "translation": "First floor" },
+  { "id": 9, "phrase": "Mil reais", "translation": "One thousand reais" },
+  { "id": 10, "phrase": "Um milhão de habitantes", "translation": "One million inhabitants" }
+]

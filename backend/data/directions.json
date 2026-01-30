@@ -1,0 +1,12 @@
+[
+  { "id": 1, "phrase": "Onde fica o banheiro?", "translation": "Where is the bathroom?" },
+  { "id": 2, "phrase": "Vire à esquerda", "translation": "Turn left" },
+  { "id": 3, "phrase": "Siga em frente", "translation": "Go straight ahead" },
+  { "id": 4, "phrase": "Fica perto da praia", "translation": "It's near the beach" },
+  { "id": 5, "phrase": "É do outro lado da rua", "translation": "It's on the other side of the street" },
+  { "id": 6, "phrase": "Fica ao lado do mercado", "translation": "It's next to the market" },
+  { "id": 7, "phrase": "Como chego ao centro?", "translation": "How do I get to downtown?" },
+  { "id": 8, "phrase": "Está longe daqui?", "translation": "Is it far from here?" },
+  { "id": 9, "phrase": "Pode me mostrar no mapa?", "translation": "Can you show me on the map?" },
+  { "id": 10, "phrase": "Estou perdido", "translation": "I am lost" }
+]

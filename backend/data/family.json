@@ -1,0 +1,12 @@
+[
+  { "id": 1, "phrase": "Esta é minha mãe", "translation": "This is my mother" },
+  { "id": 2, "phrase": "Eu tenho dois irmãos", "translation": "I have two siblings" },
+  { "id": 3, "phrase": "Meu pai trabalha em São Paulo", "translation": "My father works in São Paulo" },
+  { "id": 4, "phrase": "Você tem filhos?", "translation": "Do you have children?" },
+  { "id": 5, "phrase": "Minha avó mora no interior", "translation": "My grandmother lives in the countryside" },
+  { "id": 6, "phrase": "Somos uma família grande", "translation": "We are a big family" },
+  { "id": 7, "phrase": "Meu marido é médico", "translation": "My husband is a doctor" },
+  { "id": 8, "phrase": "Ela é minha prima", "translation": "She is my cousin" },
+  { "id": 9, "phrase": "Vamos visitar meus tios", "translation": "We are going to visit my uncles" },
+  { "id": 10, "phrase": "Eu sou filho único", "translation": "I am an only child" }
+]

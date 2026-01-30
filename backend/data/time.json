@@ -1,0 +1,12 @@
+[
+  { "id": 1, "phrase": "Que horas são?", "translation": "What time is it?" },
+  { "id": 2, "phrase": "São três da tarde", "translation": "It's three in the afternoon" },
+  { "id": 3, "phrase": "Hoje é segunda-feira", "translation": "Today is Monday" },
+  { "id": 4, "phrase": "Meu aniversário é em julho", "translation": "My birthday is in July" },
+  { "id": 5, "phrase": "Amanhã de manhã", "translation": "Tomorrow morning" },
+  { "id": 6, "phrase": "Daqui a uma hora", "translation": "In one hour" },
+  { "id": 7, "phrase": "Semana que vem", "translation": "Next week" },
+  { "id": 8, "phrase": "O encontro é às duas e meia", "translation": "The meeting is at two thirty" },
+  { "id": 9, "phrase": "No fim de semana", "translation": "On the weekend" },
+  { "id": 10, "phrase": "De segunda a sexta", "translation": "From Monday to Friday" }
+]

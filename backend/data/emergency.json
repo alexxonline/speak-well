@@ -1,0 +1,12 @@
+[
+  { "id": 1, "phrase": "Preciso de ajuda", "translation": "I need help" },
+  { "id": 2, "phrase": "Chame a polícia", "translation": "Call the police" },
+  { "id": 3, "phrase": "Chame uma ambulância", "translation": "Call an ambulance" },
+  { "id": 4, "phrase": "Estou doente", "translation": "I am sick" },
+  { "id": 5, "phrase": "Onde fica o hospital mais próximo?", "translation": "Where is the nearest hospital?" },
+  { "id": 6, "phrase": "Perdi meu passaporte", "translation": "I lost my passport" },
+  { "id": 7, "phrase": "Fui roubado", "translation": "I was robbed" },
+  { "id": 8, "phrase": "Está acontecendo um acidente", "translation": "There is an accident happening" },
+  { "id": 9, "phrase": "Preciso de um médico", "translation": "I need a doctor" },
+  { "id": 10, "phrase": "É uma emergência", "translation": "It's an emergency" }
+]

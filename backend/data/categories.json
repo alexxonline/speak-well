@@ -1,0 +1,62 @@
+[
+  {
+    "id": "greetings",
+    "name": "Greetings & Basics",
+    "description": "Essential greetings and polite phrases",
+    "icon": "👋"
+  },
+  {
+    "id": "restaurant",
+    "name": "Restaurant & Dining",
+    "description": "Ordering food and dining out",
+    "icon": "🍽️"
+  },
+  {
+    "id": "shopping",
+    "name": "Shopping",
+    "description": "Buying items and asking prices",
+    "icon": "🛍️"
+  },
+  {
+    "id": "travel",
+    "name": "Travel & Transportation",
+    "description": "Getting around and travel phrases",
+    "icon": "✈️"
+  },
+  {
+    "id": "family",
+    "name": "Family & Relationships",
+    "description": "Talking about family and people",
+    "icon": "👨‍👩‍👧‍👦"
+  },
+  {
+    "id": "numbers",
+    "name": "Numbers & Counting",
+    "description": "Numbers and quantities",
+    "icon": "🔢"
+  },
+  {
+    "id": "time",
+    "name": "Time & Dates",
+    "description": "Telling time and scheduling",
+    "icon": "🕐"
+  },
+  {
+    "id": "directions",
+    "name": "Directions & Locations",
+    "description": "Asking and giving directions",
+    "icon": "🗺️"
+  },
+  {
+    "id": "weather",
+    "name": "Weather",
+    "description": "Talking about weather conditions",
+    "icon": "🌤️"
+  },
+  {
+    "id": "emergency",
+    "name": "Emergency",
+    "description": "Important emergency phrases",
+    "icon": "🚨"
+  }
+]

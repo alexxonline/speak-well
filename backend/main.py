@@ -3,9 +3,10 @@ FastAPI backend for SpeakWell - Portuguese pronunciation learning app.
 Uses ElevenLabs Speech-to-Text API to transcribe audio and evaluate pronunciation.
 """
 
+import json
 import os
 from io import BytesIO
-from typing import List
+from typing import List, Optional
 from dotenv import load_dotenv
 from fastapi import FastAPI, File, Form, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -30,6 +31,9 @@ app.add_middleware(
 # Initialize ElevenLabs client
 elevenlabs = ElevenLabs(api_key=os.getenv("ELEVENLABS_API_KEY"))
 
+# Data directory for phrase categories
+DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
+
 
 # Pydantic Models
 class WordEvaluation(BaseModel):
@@ -51,19 +55,23 @@ class Phrase(BaseModel):
     translation: str
 
 
-# Portuguese phrases data (matching frontend)
-PORTUGUESE_PHRASES = [
-    {"id": 1, "phrase": "Olá, como vai?", "translation": "Hello, how are you?"},
-    {"id": 2, "phrase": "Bom dia", "translation": "Good morning"},
-    {"id": 3, "phrase": "Obrigado", "translation": "Thank you"},
-    {"id": 4, "phrase": "Por favor", "translation": "Please"},
-    {"id": 5, "phrase": "Como se chama?", "translation": "What is your name?"},
-    {"id": 6, "phrase": "Muito prazer", "translation": "Nice to meet you"},
-    {"id": 7, "phrase": "Até logo", "translation": "See you later"},
-    {"id": 8, "phrase": "Boa noite", "translation": "Good night"},
-    {"id": 9, "phrase": "Eu não entendo", "translation": "I don't understand"},
-    {"id": 10, "phrase": "Você fala inglês?", "translation": "Do you speak English?"},
-]
+class Category(BaseModel):
+    id: str
+    name: str
+    description: str
+    icon: str
+
+
+def load_json_file(filename: str) -> list:
+    """Load JSON data from the data directory."""
+    filepath = os.path.join(DATA_DIR, filename)
+    try:
+        with open(filepath, "r", encoding="utf-8") as file_handle:
+            return json.load(file_handle)
+    except FileNotFoundError:
+        return []
+    except json.JSONDecodeError:
+        return []
 
 
 def normalize_text(text: str) -> str:
@@ -109,16 +117,42 @@ async def root():
     return {"message": "SpeakWell API is running", "status": "healthy"}
 
 
+@app.get("/categories", response_model=List[Category])
+async def get_categories():
+    """Get all available phrase categories."""
+    return load_json_file("categories.json")
+
+
+@app.get("/categories/{category_id}/phrases", response_model=List[Phrase])
+async def get_phrases_by_category(category_id: str):
+    """Get all phrases for a specific category."""
+    categories = load_json_file("categories.json")
+    if not any(category["id"] == category_id for category in categories):
+        raise HTTPException(status_code=404, detail="Category not found")
+
+    phrases = load_json_file(f"{category_id}.json")
+    if not phrases:
+        raise HTTPException(status_code=404, detail="No phrases found for category")
+
+    return phrases
+
+
 @app.get("/phrases", response_model=List[Phrase])
-async def get_phrases():
-    """Get all available Portuguese phrases."""
-    return PORTUGUESE_PHRASES
+async def get_phrases(category: Optional[str] = None):
+    """Get phrases for a category (defaults to greetings)."""
+    category_id = category or "greetings"
+    phrases = load_json_file(f"{category_id}.json")
+    if not phrases:
+        raise HTTPException(status_code=404, detail="No phrases found for category")
+    return phrases
 
 
 @app.get("/phrases/{phrase_id}", response_model=Phrase)
-async def get_phrase(phrase_id: int):
-    """Get a specific phrase by ID."""
-    for phrase in PORTUGUESE_PHRASES:
+async def get_phrase(phrase_id: int, category: Optional[str] = None):
+    """Get a specific phrase by ID within a category."""
+    category_id = category or "greetings"
+    phrases = load_json_file(f"{category_id}.json")
+    for phrase in phrases:
         if phrase["id"] == phrase_id:
             return phrase
     raise HTTPException(status_code=404, detail="Phrase not found")
@@ -127,7 +161,8 @@ async def get_phrase(phrase_id: int):
 @app.post("/transcribe", response_model=TranscriptionResponse)
 async def transcribe_audio(
     audio: UploadFile = File(..., description="Audio file containing Portuguese speech"),
-    expected_phrase: str = Form(..., description="The expected Portuguese phrase to compare against")
+    expected_phrase: str = Form(..., description="The expected Portuguese phrase to compare against"),
+    category: Optional[str] = Form(None, description="Optional category ID for context")
 ):
     """
     Transcribe audio using ElevenLabs Speech-to-Text and evaluate pronunciation.

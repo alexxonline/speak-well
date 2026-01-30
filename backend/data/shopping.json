@@ -1,0 +1,12 @@
+[
+  { "id": 1, "phrase": "Quanto custa?", "translation": "How much does it cost?" },
+  { "id": 2, "phrase": "Você aceita cartão de crédito?", "translation": "Do you accept credit card?" },
+  { "id": 3, "phrase": "Posso experimentar?", "translation": "Can I try it on?" },
+  { "id": 4, "phrase": "Está em promoção?", "translation": "Is it on sale?" },
+  { "id": 5, "phrase": "Estou só olhando", "translation": "I'm just looking" },
+  { "id": 6, "phrase": "Tem um tamanho maior?", "translation": "Do you have a larger size?" },
+  { "id": 7, "phrase": "Você tem isso em outra cor?", "translation": "Do you have this in another color?" },
+  { "id": 8, "phrase": "Posso trocar se não servir?", "translation": "Can I exchange it if it doesn't fit?" },
+  { "id": 9, "phrase": "Onde fica o caixa?", "translation": "Where is the checkout?" },
+  { "id": 10, "phrase": "Vou levar", "translation": "I'll take it" }
+]

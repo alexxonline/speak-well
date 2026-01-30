@@ -39,53 +39,15 @@ export function Exercise() {
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
   const audioChunksRef = useRef<Blob[]>([])
+  const recordingPhraseRef = useRef<string>('')
 
   const currentPhrase = portuguesePhrases[currentPhraseIndex]
 
-  const startRecording = useCallback(async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-      const mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' })
-      
-      audioChunksRef.current = []
-      
-      mediaRecorder.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          audioChunksRef.current.push(event.data)
-        }
-      }
-      
-      mediaRecorder.onstop = async () => {
-        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' })
-        await sendAudioForEvaluation(audioBlob)
-        
-        // Stop all tracks to release microphone
-        stream.getTracks().forEach(track => track.stop())
-      }
-      
-      mediaRecorderRef.current = mediaRecorder
-      mediaRecorder.start()
-      setIsRecording(true)
-      setError(null)
-    } catch (err) {
-      setError('Could not access microphone. Please allow microphone permissions.')
-      console.error('Error accessing microphone:', err)
-    }
-  }, [])
-
-  const stopRecording = useCallback(() => {
-    if (mediaRecorderRef.current && isRecording) {
-      mediaRecorderRef.current.stop()
-      setIsRecording(false)
-      setIsEvaluating(true)
-    }
-  }, [isRecording])
-
-  const sendAudioForEvaluation = async (audioBlob: Blob) => {
+  const sendAudioForEvaluation = async (audioBlob: Blob, expectedPhrase: string) => {
     try {
       const formData = new FormData()
       formData.append('audio', audioBlob, 'recording.webm')
-      formData.append('expected_phrase', currentPhrase.phrase)
+      formData.append('expected_phrase', expectedPhrase)
 
       const response = await fetch(`${API_BASE_URL}/transcribe`, {
         method: 'POST',
@@ -105,6 +67,49 @@ export function Exercise() {
       setIsEvaluating(false)
     }
   }
+
+  const startRecording = useCallback(async () => {
+    try {
+      // Store the current phrase at the moment recording starts
+      recordingPhraseRef.current = currentPhrase.phrase
+      
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      const mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' })
+      
+      audioChunksRef.current = []
+      
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          audioChunksRef.current.push(event.data)
+        }
+      }
+      
+      mediaRecorder.onstop = async () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' })
+        // Use the phrase that was recorded, not the current one
+        await sendAudioForEvaluation(audioBlob, recordingPhraseRef.current)
+        
+        // Stop all tracks to release microphone
+        stream.getTracks().forEach(track => track.stop())
+      }
+      
+      mediaRecorderRef.current = mediaRecorder
+      mediaRecorder.start()
+      setIsRecording(true)
+      setError(null)
+    } catch (err) {
+      setError('Could not access microphone. Please allow microphone permissions.')
+      console.error('Error accessing microphone:', err)
+    }
+  }, [currentPhrase.phrase])
+
+  const stopRecording = useCallback(() => {
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop()
+      setIsRecording(false)
+      setIsEvaluating(true)
+    }
+  }, [isRecording])
 
   const handleRecord = () => {
     if (isRecording) {
@@ -126,6 +131,10 @@ export function Exercise() {
       setEvaluation(null)
       setError(null)
       setIsRecording(false)
+      // Stop any ongoing recording
+      if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+        mediaRecorderRef.current.stop()
+      }
     }
   }
 
@@ -135,6 +144,10 @@ export function Exercise() {
       setEvaluation(null)
       setError(null)
       setIsRecording(false)
+      // Stop any ongoing recording
+      if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+        mediaRecorderRef.current.stop()
+      }
     }
   }
 

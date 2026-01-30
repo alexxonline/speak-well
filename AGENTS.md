@@ -1,0 +1,6 @@
+- For backend Use FastApi with Pydantic
+- Virtual environment is .venv always use it for backend development
+- Put backend in /backend folder
+- Write any script you need to test your work is right in test_scripts
+- ElevenLabs API KEY is .env file use a dotenv loader to use it.
+- If you learn something and want to document it use a file in root with the name LEARNINGS.md
